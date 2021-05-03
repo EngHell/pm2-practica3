@@ -1,5 +1,5 @@
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
+from django.contrib.auth import login, get_user_model
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from .forms import CustomUserCreationForm, UserUpdateFrom
@@ -9,10 +9,11 @@ from django.template.loader import get_template
 from django.template import Context
 from django.contrib.auth.decorators import login_required
 from secrets import token_urlsafe
-from .models import ValidationToken
+from .models import ValidationToken, CustomUser
 from django.conf import settings
 
 # Create your views here.
+MyUser = get_user_model()
 
 
 @login_required()
@@ -34,6 +35,13 @@ def update(request):
 @login_required()
 def dashboard(request):
     return render(request, 'dashboard/dashboard.html')
+
+
+def profile(request, user):
+    u = get_object_or_404(MyUser, username=user)
+
+    return HttpResponse(f'hi {u.email}')
+
 
 
 def home(request):

@@ -21,12 +21,19 @@ class Major(models.Model):
         return "[{code}] {name}".format(code=self.code, name=self.name)
 
 
+class Profession(models.Model):
+    name = models.CharField(max_length=255, blank=False, null=False)
+
+    def __str__(self):
+        return self.name
+
+
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
-    def create_user(self, email, username, password, genre, major, cui, **extra_fields):
+    def create_user(self, email, username, password, genre, profession, cui, **extra_fields):
         """
         Create and save a User with the given email and password.
         """
@@ -37,12 +44,12 @@ class CustomUserManager(BaseUserManager):
         if not cui:
             raise ValueError(_('The cui must be set'))
         email = self.normalize_email(email)
-        user = self.model(email=email, genre=StudentGenre(pk=genre), major=Major(pk=major), cui=cui, **extra_fields)
+        user = self.model(email=email, genre=StudentGenre(pk=genre), profession=Profession(pk=profession), cui=cui, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password, genre, major, cui, **extra_fields):
+    def create_superuser(self, email, password, genre, profession, cui, **extra_fields):
         """
         Create and save a SuperUser with the given email and password.
         """
@@ -54,7 +61,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(email, password, genre, major, cui, **extra_fields)
+        return self.create_user(email, password, genre, profession, cui, **extra_fields)
 
 
 class CustomUser(AbstractUser):
@@ -63,10 +70,10 @@ class CustomUser(AbstractUser):
         StudentGenre,
         on_delete=models.DO_NOTHING,
         null=False,
-        default=0,
+        default=1,
     )
-    major = models.ForeignKey(
-        Major,
+    profession = models.ForeignKey(
+        Profession,
         on_delete=models.DO_NOTHING,
         null=False,
         default=1,
@@ -82,7 +89,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'genre', 'major']
+    REQUIRED_FIELDS = ['username', 'genre', 'profession']
 
     objects = CustomUserManager()
 

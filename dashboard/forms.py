@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import get_user_model
-from .models import StudentGenre, Major
+from .models import StudentGenre, Profession
 
 MyUser = get_user_model()
 
@@ -10,7 +10,7 @@ class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     genre = forms.ModelChoiceField(queryset=StudentGenre.objects.all(), required=True, label='Genero', empty_label='Selecciona tu genero')
     cui = forms.CharField(required=True, min_length=13, max_length=13)
-    major = forms.ModelChoiceField(queryset=Major.objects.all(), required=True, label='Carrera', empty_label='Slecciona tu carrera')
+    profession = forms.ModelChoiceField(queryset=Profession.objects.all(), required=True, label='Profesion', empty_label='Slecciona tu profesion')
     
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
@@ -19,7 +19,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = MyUser
-        fields = ['email', 'username', 'cui', 'genre', 'major', 'password1', 'password2', ]
+        fields = ['email', 'username', 'cui', 'genre', 'profession', 'password1', 'password2', ]
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -55,13 +55,13 @@ class UserUpdateFrom(forms.ModelForm):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
     genre = forms.ModelChoiceField(queryset=StudentGenre.objects.all(), required=True, label='Genero')
-    major = forms.ModelChoiceField(queryset=Major.objects.all(), required=True, label='Carrera')
+    profession = forms.ModelChoiceField(queryset=Profession.objects.all(), required=True, label='Profesion')
 
     def __init__(self, *args, **kwargs):
         f = super(UserUpdateFrom, self).__init__(*args, **kwargs)
 
         self.fields['genre'].initial = self.instance.genre_id
-        self.fields['major'].initial = self.instance.major_id
+        self.fields['profession'].initial = self.instance.profession_id
 
 
     def clean_cui(self):
@@ -73,13 +73,13 @@ class UserUpdateFrom(forms.ModelForm):
 
     class Meta:
         model = MyUser
-        fields = ['username', 'email', 'cui', 'first_name', 'last_name','genre','major']
+        fields = ['username', 'email', 'cui', 'first_name', 'last_name', 'genre', 'profession']
 
     def save(self, commit=True):
         user = super(UserUpdateFrom, self).save(commit=False)
         user.email = self.cleaned_data['email']
         #lsuser.genre = self.cleaned_data['genre']
-        #user.major = self.cleaned_data['major']
+        #user.profession = self.cleaned_data['profession']
 
         if commit:
             user.save()

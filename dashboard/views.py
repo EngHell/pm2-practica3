@@ -22,7 +22,7 @@ def update(request):
         form = UserUpdateFrom(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-        return redirect(reverse('update_profile'))
+            return redirect(reverse('update_profile'))
     else:
         form = UserUpdateFrom(instance=request.user)
 

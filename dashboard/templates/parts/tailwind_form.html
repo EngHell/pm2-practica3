@@ -1,0 +1,51 @@
+{% load widget_tweaks %}
+<form method="post" class="flex flex-col" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+        <ul>
+            {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% for hidden_field in form.hidden_fields %}
+        {% if hidden_field.errors %}
+            <ul>
+                {% for error in hidden_field.errors %}
+                    <li>(Hidden field {{ hidden_field.name }}) {{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {{ hidden_field }}
+    {% endfor %}
+
+    <div class="">
+        {% for field in form.visible_fields %}
+            <div class="flex flex-col mb-5">
+                <div class="grid grid-cols-7 md:grid-cols-5 col-gap-4">
+                    <div class="col-start-2 col-span-5 md:col-start-2 md:col-span-3 flex flex-row items-center">
+                        {% render_field field class="text-center hover:bg-black hover:bg-opacity-25 outline-none bg-transparent border-b-2 border-solid w-full rounded-lg p-1" placeholder=field.name %}
+                        {% if field.help_text %}
+                            <div class="w-4 group h-4 text-xs bg-opacity-25 bg-black text-center rounded-full absolute ml-auto">
+                                ?
+                                <div class="text-center w-64 bg-opacity-50 bg-black rounded-lg pt-2 pb-2 pr-5 pl-5 absolute group-hover:block hidden">
+                                    {{ field.help_text }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    {% if field.errors %}
+                        <div class="col-start-2 col-span-5 md:col-start-2 md:col-span-3">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="flex flex-row justify-center mt5">
+        <button class="flex-initial pt-1 pb-1 pr-5 pl-5 hover:bg-black hover:bg-opacity-25 border-2 border-solid border-white rounded-lg"
+                type="submit">{{ button_text }}</button>
+    </div>
+</form>

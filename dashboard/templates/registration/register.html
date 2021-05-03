@@ -1,0 +1,17 @@
+<!--users/templates/users/register.html-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="grid grid-cols-5 pr-12 pl-12">
+        <h2 class="col-span-5 text-center text-lg">Register</h2>
+        <div class="col-start-2 col-span-3 mt-5">
+            <div class="border-l-2 rounded-lg">
+                <div class="border-r-2 rounded-lg">
+                    {% include 'parts/tailwind_form.html' with form=form button_text='Registrar' %}
+                </div>
+            </div>
+        </div>
+        <div class="col-span-5"><a class="" href="{% url 'login' %}">Back to login</a></div>
+    </div>
+{% endblock %}

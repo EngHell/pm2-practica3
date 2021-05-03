@@ -1,0 +1,21 @@
+<!--users/templates/registration/login.html-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="grid grid-cols-5 pr-12 pl-12">
+        <h2 class="col-span-5 text-center text-lg">Login</h2>
+        <div class="col-start-2 col-span-3 mt-5">
+            <div class="border-l-2 rounded-lg">
+                <div class="border-r-2 rounded-lg">
+                    {% include 'parts/tailwind_form.html' with form=form button_text='Login' %}
+                </div>
+            </div>
+        </div>
+        <div class="mt-3 flex flex-col items-center text-sm col-start-1 col-span-5 md:col-start-2 md:col-span-3">
+            <span>root@admin:/help/# <a class="underline" href="{% url 'password_reset' %}">Reset password</a></span>
+            <span>root@admin:/manage/# <a class="underline" href="{% url 'register' %}">Register</a></span>
+        </div>
+        <div class="col-span-5"><a class="" href="{% url 'dashboard' %}">Back to dashboard</a></div>
+    </div>
+{% endblock %}

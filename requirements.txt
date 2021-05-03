@@ -1,0 +1,7 @@
+asgiref==3.3.1
+Django==3.1.7
+django-tailwind @ git+https://github.com/timonweb/django-tailwind.git@47c19712b1ceddbc883b9fd8cfb7cb448b9834d3
+django-widget-tweaks==1.4.8
+psycopg2==2.8.6
+pytz==2021.1
+sqlparse==0.4.1

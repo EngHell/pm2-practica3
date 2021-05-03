@@ -1,0 +1,21 @@
+<!--users/templates/registration/update_profile.html-->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="grid grid-cols-5">
+    <h2 class="col-span-5 text-center text-lg">Cambio de contraseña</h2>
+    <div class="col-start-2 col-span-3 mt-5">
+        <div class="border-l-2 rounded-lg">
+            <div class="border-r-2 rounded-lg">
+                {% include 'parts/tailwind_form.html' with form=form button_text='Actualizar' %}
+            </div>
+        </div>
+    </div>
+    <div class="col-start-2 col-span-3 text-right">
+    <a href="{% url 'password_change' %}">Change password</a></div>
+    </div>
+    <div class="col-span-5 flex flex-col">
+        <a class="" href="{% url 'dashboard' %}">Back to dashboard</a>
+    </div>
+{% endblock %}

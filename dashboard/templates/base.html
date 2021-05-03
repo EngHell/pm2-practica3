@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica 1</title>
+    <link
+            rel="stylesheet"
+            href="{% static 'css/styles.css' %}"
+            type="text/css"
+    />
+</head>
+<body class="flex flex-col h-screen bg-indigo-900 text-white">
+<!--users/templates/base.html-->
+{% include 'parts/header.html' %}
+<div class="mt-2 grid grid-cols-5">
+    <div class="col-span-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<footer class="mt-auto mt-2 mb-2 mr-10 ml-10 text-center">angel UwU</footer>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<header class="bg-black bg-opacity-25">
+    <div class="flex flex-row pt-2 pb-2 pr-5 pl-5 mr-5 ml-5 border-purple-600 border-b-2 border-dashed">
+        <a href="/">Django's moodle xd</a>
+        <div class="flex-grow"></div>
+        <div>
+            <ul class="flex flex-row">
+                {% if user.is_authenticated %}
+                    <li class="group">
+                        <a href="#">Menu Personal</a>
+                        <ul class="hidden absolute group-hover:block bg-black bg-opacity-50 p-5 z-50">
+                            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                            <li><a href="{% url 'update_profile' %}">Editar</a></li>
+                            <li><a href="{% url 'logout' %}">Cerrar sesion</a></li>
+                        </ul>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Iniciar Sesion</a></li>
+                    <li><a class="ml-5 text-sm text-gray-400" href="{% url 'register' %}">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</header>

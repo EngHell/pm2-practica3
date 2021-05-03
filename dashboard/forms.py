@@ -63,13 +63,6 @@ class UserUpdateFrom(forms.ModelForm):
         self.fields['genre'].initial = self.instance.genre_id
         self.fields['major'].initial = self.instance.major_id
 
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        try:
-            MyUser.objects.get(email=email)
-        except get_user_model().DoesNotExist:
-            return email
-        raise forms.ValidationError('duplicate_email')
 
     def clean_cui(self):
         cui: str = self.cleaned_data['cui']

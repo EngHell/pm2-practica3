@@ -130,7 +130,7 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'dashboard.CustomUser'
 
-LOGIN_URL = 'login'
+LOGIN_URL = 'acceso'
 
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = "home"

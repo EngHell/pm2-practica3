@@ -5,9 +5,10 @@
 
 from django.contrib.auth import views
 from django.urls import path
+from . import viewclasses
 
 urlpatterns = [
-    path('acceso/', views.LoginView.as_view(), name='login'),
+    path('acceso/', viewclasses.MyLoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
 
     path('password_change/', views.PasswordChangeView.as_view(), name='password_change'),

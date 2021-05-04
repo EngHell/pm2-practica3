@@ -48,14 +48,15 @@ def home(request):
 
 
 def activate(request, token):
-    try:
-        t = ValidationToken.objects.get(code=token)
+    t = get_object_or_404(ValidationToken, code=token)
+    old_code = True
+    if t.is_valid():
         t.user.activated = True
         t.user.save()
-    except ValidationToken.DoesNotExist:
-        return HttpResponseNotFound('<h1> not found i said c:</h1>')
+        old_code = False
 
-    return redirect(reverse('login'))
+    query = f'?old_code={old_code}' if old_code else f'?activated=True'
+    return redirect(reverse('login') + query)
 
 
 def register(request):
@@ -68,28 +69,31 @@ def register(request):
         if form.is_valid():
             user = form.save()
             # login(request, user, 'django.contrib.auth.backends.ModelBackend')
-            txt_template = get_template('registration/registration_confirmation_email.txt')
-            html_template = get_template('registration/registration_confirmation_email.html')
-
-            token = token_urlsafe(32)
-            tokenObject = ValidationToken(code=token, user=user)
-            tokenObject.save()
-            link = reverse('activate_profile', args=[tokenObject.code])
-            context = {'username': user.username, 'link': link, 'default_domain':settings.DEFAULT_DOMAIN}
-
-            subject, from_email, to = 'Email de confirmacion de registro', 'admin@practica1.test', user.email
-
-            text_processed = txt_template.render(context)
-            html_processed = html_template.render(context)
-
-            msg = EmailMultiAlternatives(subject, text_processed, from_email, [to])
-            msg.attach_alternative(html_processed, 'text/html')
-            msg.send()
-
-            return redirect(reverse('profile', kwargs={'user': user.username}))
+            send_token_email(user)
+            return redirect(reverse('profile', kwargs={'user': user.username}) + '?q=sent_code=True')
 
     return render(
         request,
         'registration/register.html',
         args
     )
+
+
+def send_token_email(user):
+    txt_template = get_template('registration/registration_confirmation_email.txt')
+    html_template = get_template('registration/registration_confirmation_email.html')
+
+    token = token_urlsafe(32)
+    token_object = ValidationToken(code=token, user=user)
+    token_object.save()
+    link = reverse('activate_profile', args=[token_object.code])
+    context = {'username': user.username, 'link': link, 'default_domain': settings.DEFAULT_DOMAIN}
+
+    subject, from_email, to = 'Email de confirmacion de registro', 'admin@practica1.test', user.email
+
+    text_processed = txt_template.render(context)
+    html_processed = html_template.render(context)
+
+    msg = EmailMultiAlternatives(subject, text_processed, from_email, [to])
+    msg.attach_alternative(html_processed, 'text/html')
+    msg.send()

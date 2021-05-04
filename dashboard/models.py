@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
+from datetime import datetime, timedelta
 
 # Create your models here.
 
@@ -100,6 +102,12 @@ class CustomUser(AbstractUser):
 class ValidationToken(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=False)
     code = models.CharField(max_length=50, unique=True, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return "{user} code:{code}".format(user=self.user, code=self.code)
+
+    def is_valid(self):
+        delta = now() - self.created_at
+
+        return delta.seconds <= 60*10

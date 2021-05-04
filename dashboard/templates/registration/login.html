@@ -3,6 +3,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <div class="text-purple-300 text-center mb-5">
+        {% if needs_activation %}
+            <strong>Your account is not active, please check your email for an activation link.</strong>
+        {% endif %}
+        {% if old_code %}
+            <strong>Your activation code is too old, please fill the login form and we will send you a new code.</strong>
+        {% endif %}
+        {% if activated %}
+            <strong>Your account has been activated, please log in.</strong>
+        {% endif %}
+    </div>
     <div class="grid grid-cols-5 pr-12 pl-12">
         <h2 class="col-span-5 text-center text-lg">Login</h2>
         <div class="col-start-2 col-span-3 mt-5">

@@ -46,7 +46,7 @@ class MyLoginView(LoginView):
         ip, routable = get_client_ip(self.request)
         context = {'username': user.username, 'ip': ip}
 
-        subject, from_email, to = 'Email de aviso de login', 'admin@practica1.test', user.email
+        subject, from_email, to = 'Email de aviso de inicio de sesion', 'admin@practica1.test', user.email
 
         text_processed = txt_template.render(context)
         html_processed = html_template.render(context)

@@ -2,12 +2,13 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import get_user_model
 from .models import StudentGenre, Profession
+import re
 
 MyUser = get_user_model()
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.CharField(max_length=255, required=True)
     genre = forms.ModelChoiceField(queryset=StudentGenre.objects.all(), required=True, label='Genero', empty_label='Selecciona tu genero')
     cui = forms.CharField(required=True, min_length=13, max_length=13)
     profession = forms.ModelChoiceField(queryset=Profession.objects.all(), required=True, label='Profesion', empty_label='Slecciona tu profesion')
@@ -23,11 +24,15 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
+
+        if not re.search(r"^(\.[0-9a-zA-Z]+|[0-9a-z-A-Z]*)*@[a-zA-Z0-9]*\.[a-zA-Z]{2,}$", email):
+            raise forms.ValidationError('This email address is not valid.')
+
         try:
             MyUser.objects.get(email=email)
         except get_user_model().DoesNotExist:
             return email
-        raise forms.ValidationError('duplicate_email')
+        raise forms.ValidationError('This email is already in use.')
 
     def clean_cui(self):
         cui: str = self.cleaned_data['cui']
@@ -35,7 +40,6 @@ class CustomUserCreationForm(UserCreationForm):
             return cui
 
         raise forms.ValidationError('cui must be numeric')
-
 
     def save(self, commit=True):
         user = super(CustomUserCreationForm, self).save(commit=False)
@@ -50,7 +54,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class UserUpdateFrom(forms.ModelForm):
     username = forms.CharField(required=True)
-    email = forms.EmailField(required=True)
+    email = forms.CharField(max_length=255, required=True)
     cui = forms.CharField(required=True, min_length=13, max_length=13)
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
@@ -63,6 +67,13 @@ class UserUpdateFrom(forms.ModelForm):
         self.fields['genre'].initial = self.instance.genre_id
         self.fields['profession'].initial = self.instance.profession_id
 
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        if not re.search(r"^(\.[0-9a-zA-Z]+|[0-9a-z-A-Z]*)*@[a-zA-Z0-9]*\.[a-zA-Z]{2,}$", email):
+            raise forms.ValidationError('This email address is not valid.')
+
+        return email
 
     def clean_cui(self):
         cui: str = self.cleaned_data['cui']

@@ -7,6 +7,11 @@ import re
 MyUser = get_user_model()
 
 
+def check_email(email):
+    if not re.search(r"^(\.[0-9a-zA-Z]+|[0-9a-z-A-Z]*)*@[a-zA-Z0-9]*\.[a-zA-Z]{2,}$", email):
+        raise forms.ValidationError('This email address is not valid.')
+
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.CharField(max_length=255, required=True)
     genre = forms.ModelChoiceField(queryset=StudentGenre.objects.all(), required=True, label='Genero', empty_label='Selecciona tu genero')
@@ -25,8 +30,7 @@ class CustomUserCreationForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data['email']
 
-        if not re.search(r"^(\.[0-9a-zA-Z]+|[0-9a-z-A-Z]*)*@[a-zA-Z0-9]*\.[a-zA-Z]{2,}$", email):
-            raise forms.ValidationError('This email address is not valid.')
+        check_email(email)
 
         try:
             MyUser.objects.get(email=email)
@@ -69,10 +73,7 @@ class UserUpdateFrom(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data['email']
-
-        if not re.search(r"^(\.[0-9a-zA-Z]+|[0-9a-z-A-Z]*)*@[a-zA-Z0-9]*\.[a-zA-Z]{2,}$", email):
-            raise forms.ValidationError('This email address is not valid.')
-
+        check_email(email)
         return email
 
     def clean_cui(self):

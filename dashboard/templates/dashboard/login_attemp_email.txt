@@ -1,3 +1,6 @@
-Hello {{ username }}, You have recently logged in from ip: {{ ip }}
+Hello {{ username }}.
+
+You have recently logged in from ip: {{ ip }}
+Date: {% now "jS F Y H:i" %}
 
 If it was not you change your password now.

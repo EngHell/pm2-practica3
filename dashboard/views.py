@@ -40,8 +40,7 @@ def dashboard(request):
 def profile(request, user):
     u = get_object_or_404(MyUser, username=user)
 
-    return HttpResponse(f'hi {u.email}')
-
+    return render(request, 'dashboard/profile.html', {'profile': u})
 
 
 def home(request):
@@ -87,7 +86,7 @@ def register(request):
             msg.attach_alternative(html_processed, 'text/html')
             msg.send()
 
-            return redirect(reverse('home'))
+            return redirect(reverse('profile', kwargs={'user': user.username}))
 
     return render(
         request,

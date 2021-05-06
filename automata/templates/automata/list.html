@@ -1,12 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Articles</h1>
-<ul>
-{% for upload in object_list %}
-    <li>{{ upload.name }}</li>
-{% empty %}
-    <li>No Uploads yet.</li>
-{% endfor %}
-</ul>
+    <div class="flex flex-col items-center px-10">
+        <h1 class="text-2xl">Files</h1>
+        <div class="bg-black bg-opacity-25 border-collapse shadow-md rounded-sm text-center min-w-full">
+            <table class="table-auto min-w-full">
+                <thead class="bg-black bg-opacity-25">
+                <tr class="">
+                    <td class="px-5 py-2">Usuario</td>
+                    <td class="px-5 py-2">Nombre</td>
+                    <td class="px-5 py-2">Editar</td>
+                </tr>
+                </thead>
+                <tbody>
+                {% for upload in object_list %}
+                    <tr class="border-b border-dashed border-purple-500">
+                        <td class="px-5 py-1">
+                            upload.user
+                        </td>
+                        <td class="px-5 py-1">
+                            upload.name
+                        </td>
+                        <td>
+                            edit
+                        </td>
+                    </tr>
+                {% empty %}
+                    No Uploads yet.
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

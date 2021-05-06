@@ -21,4 +21,5 @@ urlpatterns = [
     path('', home, name="home"),
     path('admin/', admin.site.urls),
     path('', include('dashboard.urls')),
+    path('', include('automata.urls')),
 ]

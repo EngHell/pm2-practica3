@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="post" class="flex flex-col" novalidate>
+<form method="post" class="flex flex-col" novalidate {{ enctype }}>
     {% csrf_token %}
     {% if form.non_field_errors %}
         <ul>

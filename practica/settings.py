@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard.apps.DashboardConfig',
+    'automata.apps.AutomataConfig',
     'django.contrib.admin',
     'tailwind',
     'theme',

@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import UploadedFile
 from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
 from django.shortcuts import render
@@ -9,7 +11,7 @@ from automata.forms import UploadFileForm
 from automata.models import Uploads
 
 
-class Index(ListView):
+class Index(LoginRequiredMixin, ListView):
     template_name = 'automata/list.html'
     model = Uploads
 
@@ -17,7 +19,7 @@ class Index(ListView):
         return Uploads.objects.filter(user=self.request.user)
 
 
-class UploadFileFormView(FormView):
+class UploadFileFormView(LoginRequiredMixin, FormView):
     template_name = 'automata/upload.html'
     form_class = UploadFileForm
 
@@ -30,6 +32,7 @@ class UploadFileFormView(FormView):
         upload = form.save()
         print(upload)
         return HttpResponseRedirect(reverse('automata:index'))
+
 
 def handle_uploaded_file(f: UploadedFile, request: HttpRequest):
     with open(get_file_upload_file_name(f, request), 'wb+') as destination:

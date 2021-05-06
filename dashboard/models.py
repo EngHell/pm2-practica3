@@ -46,12 +46,12 @@ class CustomUserManager(BaseUserManager):
         if not cui:
             raise ValueError(_('The cui must be set'))
         email = self.normalize_email(email)
-        user = self.model(email=email, genre=StudentGenre(pk=genre), profession=Profession(pk=profession), cui=cui, **extra_fields)
+        user = self.model(email=email, username=username, genre=StudentGenre(pk=genre), profession=Profession(pk=profession), cui=cui, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password, genre, profession, cui, **extra_fields):
+    def create_superuser(self, email, username, password, genre, profession, cui, **extra_fields):
         """
         Create and save a SuperUser with the given email and password.
         """
@@ -63,7 +63,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('Superuser must have is_staff=True.'))
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
-        return self.create_user(email, password, genre, profession, cui, **extra_fields)
+        return self.create_user(email, username, password, genre, profession, cui, **extra_fields)
 
 
 class CustomUser(AbstractUser):
@@ -91,7 +91,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'genre', 'profession']
+    REQUIRED_FIELDS = ['username', 'genre', 'profession', 'cui']
 
     objects = CustomUserManager()
 

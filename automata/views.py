@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.files.uploadedfile import UploadedFile
-from django.http import HttpResponse, HttpResponseRedirect, HttpRequest
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, HttpRequest, HttpResponseForbidden
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils.timezone import datetime
-from django.views.generic import FormView, ListView
+from django.views.generic import FormView, ListView, CreateView, UpdateView
 
-from automata.forms import UploadFileForm
+from automata.forms import UploadFileForm, EditUploadForm
 from automata.models import Uploads
 
 
@@ -19,7 +19,35 @@ class Index(LoginRequiredMixin, ListView):
         return Uploads.objects.filter(user=self.request.user)
 
 
-class UploadFileFormView(LoginRequiredMixin, FormView):
+class EditUploadedFileFormView(LoginRequiredMixin, UpdateView):
+    template_name = 'automata/edit.html'
+    form_class = EditUploadForm
+    model = Uploads
+
+    def dispatch(self, request: HttpRequest, *args, **kwargs):
+        obj: Uploads = self.get_object()
+        if not obj.user == request.user and not request.user.is_staff:
+            return HttpResponseForbidden()
+        return super(EditUploadedFileFormView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(EditUploadedFileFormView, self).get_context_data(**kwargs)
+        f = self.get_object().file.open('r')
+        context['file_content'] = f.read()
+        #context['file_content'].replace('\r\n', '\n').replace('\r', '\n').replace('\n', '\r\n')
+        return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(reverse('automata:editor', kwargs={'pk': self.get_object().id}))
+
+
+class UploadFileFormView(LoginRequiredMixin, CreateView):
     template_name = 'automata/upload.html'
     form_class = UploadFileForm
 
@@ -29,17 +57,16 @@ class UploadFileFormView(LoginRequiredMixin, FormView):
         return kwargs
 
     def form_valid(self, form):
-        upload = form.save()
-        print(upload)
+        form.save()
         return HttpResponseRedirect(reverse('automata:index'))
 
 
-def handle_uploaded_file(f: UploadedFile, request: HttpRequest):
-    with open(get_file_upload_file_name(f, request), 'wb+') as destination:
-        for chunk in f.chunks():
-            destination.write(chunk)
-        destination.close()
+def delete(request: HttpRequest, pk: int):
+    upload = get_object_or_404(Uploads, pk=pk)
 
+    if not upload.user == request.user and not request.user.is_staff:
+        return HttpResponseForbidden()
 
-def get_file_upload_file_name(f: UploadedFile, request: HttpRequest) -> str:
-    return f'uploads/automata/{request.user.id}/{datetime.now().timestamp()}.p2'
+    upload.delete()
+
+    return HttpResponseRedirect(reverse('automata:index'))

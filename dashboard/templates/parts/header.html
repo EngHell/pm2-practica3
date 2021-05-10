@@ -5,6 +5,7 @@
         <div>
             <ul class="flex flex-row">
                 {% if user.is_authenticated %}
+                    <li class="mr-3"><a href="{% url 'automata:index' %}">Automata</a></li>
                     <li class="group">
                         <a href="#">Menu Personal</a>
                         <ul class="hidden absolute group-hover:block bg-black bg-opacity-50 p-5 z-50">

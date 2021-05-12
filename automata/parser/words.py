@@ -4,5 +4,27 @@ math_words = [
     'Matétmatica',
     'Hilbert',
     'Turing',
-    'análisis'
+    'análisis',
+    'Euler',
+    'Fermat',
+    'Pitágoras',
+    'autómata',
+    'Boole',
+    'Cantor',
+    'Perelman'
+]
+
+physics_words = [
+    'Expermintación',
+    'Físico',
+    'Física',
+    'Astronomía',
+    'Mecánica',
+    'Newton',
+    'Einstein',
+    'Galileo',
+    'Modelo',
+    'Tesla',
+    'Dinámica',
+    'Partículas'
 ]

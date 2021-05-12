@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <div class="grid grid-cols-5 pr-12 pl-12">
+    <div class="grid grid-cols-5 gap-4 pr-12 pl-12">
         <h2 class="col-span-5 text-center text-lg">Edita tu archivo p2</h2>
         <div class="col-start-2 col-span-3 mt-5">
                 <div class="border-l-2 rounded-lg">
@@ -65,6 +66,13 @@
                 </div>
             </div>
         <div class="col-span-5"><a class="" href="{% url 'automata:index' %}">Back to file list</a></div>
-        <pre class="col-span-5 text-left bg-white text-black">{% autoescape off %}{{ parsed }}{% endautoescape %}</pre>
+        <pre class="col-span-5 text-left bg-white text-black p-5 rounded-md">{% autoescape off %}{{ parsed }}{% endautoescape %}</pre>
+        {% for relevant_word in relevant_words %}
+                <img
+                        class="min-w-full col-span-1"
+                        alt="{{ relevant_word }}"
+                        src="{% static 'img/words/'|add:relevant_word|add:'.jpg' %}"
+                />
+            {% endfor %}
     </div>
 {% endblock %}

@@ -10,6 +10,7 @@ from django.views.generic import FormView, ListView, CreateView, UpdateView
 from automata.forms import UploadFileForm, EditUploadForm
 from automata.models import Uploads
 from automata.parser.lib import StringStream, Parser
+from automata.parser.words import math_words, physics_words
 
 
 class Index(LoginRequiredMixin, ListView):
@@ -37,9 +38,14 @@ class EditUploadedFileFormView(LoginRequiredMixin, UpdateView):
         file_content = f.read()
         context['file_content'] = file_content
         s = StringStream(file_content)
-        p = Parser(s)
+        if self.request.user.profession.name == 'Matematico':
+            words = math_words
+        else:
+            words = physics_words
+        p = Parser(s, words)
         p.parse()
         context['parsed'] = p.parsed
+        context['relevant_words'] = p.relevant
         #context['file_content'].replace('\r\n', '\n').replace('\r', '\n').replace('\n', '\r\n')
         return context
 

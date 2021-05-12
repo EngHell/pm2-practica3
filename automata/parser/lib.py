@@ -26,9 +26,11 @@ class StringStream:
 
 class Parser:
     parsed: str = ''
+    relevant: [str] = []
 
-    def __init__(self, stream: StringStream):
+    def __init__(self, stream: StringStream, words: [str]):
         self.stream = stream
+        self.words = words
 
     def has_ended(self):
         return self.stream.index >= (len(self.stream)-1)
@@ -61,7 +63,9 @@ class Parser:
         if is_matched:
             t = check_accepted_type(accepts)(left)
             if t == "palabra":
-                if word in math_words:
+                if word in self.words:
+                    if word not in self.relevant:
+                        self.relevant.append(word)
                     word = f'<span class="grammar-{t}" data-img="{t}">{word}</span>'
             else:
                 word = f'<span class="grammar-{t}">{word}</span>'

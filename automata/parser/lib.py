@@ -1,5 +1,5 @@
 from typing import Callable
-from automata.dfa.automata import state0, transition, get_accept_test, accepts, check_accepted_type
+from automata.dfa.automata import state0, transition, get_accept_test, accepts, check_accepted_type, compute
 from automata.parser.words import math_words
 
 
@@ -32,6 +32,7 @@ class Parser:
         self.stream = stream
         self.words = words
         self.relevant = []
+        self.remainder = ''
 
     def has_ended(self):
         return self.stream.index >= (len(self.stream)-1)
@@ -57,16 +58,33 @@ class Parser:
         while not self.has_ended() and not self.stream.peek().isspace():
             right = self.stream.next()
             word += right
-            left = transition(left, right)
 
-        is_matched = get_accept_test(accepts)(left)
-
-        if is_matched:
-            word = self.add_tag_to_word(word, left)
+        word = self.process_word(word, '')
 
         self.parsed += word
 
         self.parse()
+
+    def process_word(self, word, remainder):
+        self.remainder = remainder + self.remainder
+        left = compute(word)
+        is_matched = get_accept_test(accepts)(left)
+
+        if is_matched:
+            temp = self.remainder
+            self.remainder = ''
+            word = self.add_tag_to_word(word, left) + self.process_word(temp, '')
+        else:
+            if len(word) > 1:
+                cut = len(word) - 1
+                word = self.process_word(word[:cut], word[cut])
+            else:
+                temp = self.remainder
+                self.remainder = ''
+                if not temp == '':
+                    word = word + self.process_word(temp, '')
+
+        return word
 
     def add_tag_to_word(self, word, left):
         t = check_accepted_type(accepts)(left)

@@ -66,7 +66,8 @@
                 </div>
             </div>
         <div class="col-span-5"><a class="" href="{% url 'automata:index' %}">Back to file list</a></div>
-        <pre class="col-span-5 text-left bg-white text-black p-5 rounded-md">{% autoescape off %}{{ parsed }}{% endautoescape %}</pre>
+        <pre
+                class="col-span-5 text-left bg-white text-black p-5 rounded-md overflow-x-auto">{% autoescape off %}{{ parsed }}{% endautoescape %}</pre>
         {% for relevant_word in relevant_words %}
                 <img
                         class="min-w-full col-span-1"

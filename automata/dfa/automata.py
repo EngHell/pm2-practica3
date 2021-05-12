@@ -121,7 +121,7 @@ def state7(c) -> Callable:
         .map(cond_g_is_digit()) \
         .chain(convert_validator_to_state(state7)) \
         .map(cond_any()) \
-        .chain(state29) \
+        .chain(convert_validator_to_state(state29)) \
         .value
 
 
@@ -134,7 +134,7 @@ def state8(c) -> Callable:
         .map(cond_g_is_i()) \
         .chain(convert_validator_to_state(state17)) \
         .map(cond_any()) \
-        .chain(state31) \
+        .chain(convert_validator_to_state(state31)) \
         .value
 
 
@@ -188,7 +188,7 @@ def state16(c) -> Callable:
     return state_g_if_single(cond_g_is_digit, state15, state31)(c)
 
 
-def state17(c)-> Callable:
+def state17(c) -> Callable:
     return state30
 
 

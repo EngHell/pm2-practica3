@@ -31,6 +31,7 @@ class Parser:
     def __init__(self, stream: StringStream, words: [str]):
         self.stream = stream
         self.words = words
+        self.relevant = []
 
     def has_ended(self):
         return self.stream.index >= (len(self.stream)-1)

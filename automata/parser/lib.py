@@ -62,15 +62,20 @@ class Parser:
         is_matched = get_accept_test(accepts)(left)
 
         if is_matched:
-            t = check_accepted_type(accepts)(left)
-            if t == "palabra":
-                if word in self.words:
-                    if word not in self.relevant:
-                        self.relevant.append(word)
-                    word = f'<span class="grammar-{t}" data-img="{t}">{word}</span>'
-            else:
-                word = f'<span class="grammar-{t}">{word}</span>'
+            word = self.add_tag_to_word(word, left)
 
         self.parsed += word
 
         self.parse()
+
+    def add_tag_to_word(self, word, left):
+        t = check_accepted_type(accepts)(left)
+        if t == "palabra":
+            if word in self.words:
+                if word not in self.relevant:
+                    self.relevant.append(word)
+                word = f'<span class="grammar-{t}" data-img="{t}">{word}</span>'
+        else:
+            word = f'<span class="grammar-{t}">{word}</span>'
+
+        return word

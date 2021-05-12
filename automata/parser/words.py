@@ -1,7 +1,7 @@
 math_words = [
     'teorema',
-    'Matématico',
-    'Matématica',
+    'Matemático',
+    'Matemática',
     'Hilbert',
     'Turing',
     'análisis',

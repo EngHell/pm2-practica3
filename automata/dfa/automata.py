@@ -1,11 +1,11 @@
 from functools import reduce
 from typing import Dict, Callable
 
-from conditionals import cond_g_is_digit, cond, cond_g_is_dot, cond_any, cond_g_is_alpha, cond_g_is_plus_or_minus, \
+from .conditionals import cond_g_is_digit, cond, cond_g_is_dot, cond_any, cond_g_is_alpha, cond_g_is_plus_or_minus, \
     cond_g_is_exp_mantisa, cond_g_is_date_separator, cond_g_is_i
-from predicates import predicate_g_union, predicate_generator_is_specific_character
-from state import convert_validator_to_state, state_g_if_single
-from validator import Validator
+from .predicates import predicate_g_union, predicate_generator_is_specific_character
+from .state import convert_validator_to_state, state_g_if_single
+from .validator import Validator
 
 
 def state0(c: str) -> Callable:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import TypeVar, Tuple, Callable, Union
-from monads import Monad
+from .monads import Monad
 
 T = TypeVar('T')
 P = TypeVar('P')

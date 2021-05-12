@@ -1,6 +1,6 @@
 import sys
 
-from automata import compute, get_accept_test, check_accepted_type, accepts
+from .automata import compute, get_accept_test, check_accepted_type, accepts
 
 
 def main():

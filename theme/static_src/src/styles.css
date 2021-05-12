@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.grammar-entero{
+    @apply text-blue-900;
+}
+
+.grammar-decimal{
+    @apply text-green-900;
+}
+
+.grammar-cientifica{
+    @apply text-purple-900;
+}
+
+.grammar-complejo{
+    @apply text-red-900;
+}
+
+.grammar-palabra{
+    @apply text-gray-300;
+}
+
+.grammar-fecha{
+    color:orange;
+}

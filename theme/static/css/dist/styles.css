@@ -923,6 +923,9 @@ select {
 .h-screen {
 	height: 100vh;
 }
+.h-48 {
+	height: 12rem;
+}
 .h-4 {
 	height: 1rem;
 }
@@ -946,9 +949,6 @@ select {
 }
 .h-40 {
 	height: 10rem;
-}
-.h-48 {
-	height: 12rem;
 }
 .h-5 {
 	height: 1.25rem;
@@ -1308,11 +1308,11 @@ select {
 .text-center {
 	text-align: center;
 }
-.text-right {
-	text-align: right;
-}
 .text-left {
 	text-align: left;
+}
+.text-right {
+	text-align: right;
 }
 .text-lg {
 	font-size: 1.125rem;
@@ -1382,6 +1382,29 @@ select {
 .outline-none {
 	outline: 2px solid transparent;
 	outline-offset: 2px;
+}
+.grammar-entero {
+	--tw-text-opacity: 1;
+	color: rgba(30, 58, 138, var(--tw-text-opacity));
+}
+.grammar-decimal {
+	--tw-text-opacity: 1;
+	color: rgba(6, 78, 59, var(--tw-text-opacity));
+}
+.grammar-cientifica {
+	--tw-text-opacity: 1;
+	color: rgba(76, 29, 149, var(--tw-text-opacity));
+}
+.grammar-complejo {
+	--tw-text-opacity: 1;
+	color: rgba(127, 29, 29, var(--tw-text-opacity));
+}
+.grammar-palabra {
+	--tw-text-opacity: 1;
+	color: rgba(209, 213, 219, var(--tw-text-opacity));
+}
+.grammar-fecha{
+    color:orange;
 }
 .hover\:bg-black:hover {
 	--tw-bg-opacity: 1;

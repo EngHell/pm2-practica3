@@ -1,6 +1,6 @@
 from typing import Tuple, Any
 
-from predicates import PredicateType, predicate_g_is_dot, predicate_generator_is_specific_character, \
+from .predicates import PredicateType, predicate_g_is_dot, predicate_generator_is_specific_character, \
     predicate_is_number, predicate_is_alpha, predicate_g_union
 
 

@@ -3,9 +3,9 @@ from functools import reduce
 from typing import Union, Callable, TypeVar, Tuple, Any, Dict
 import sys
 
-from conditionals import cond_any
-from validator import Validator
-from monads import Functor, FunctorCallable, Monad, MonoidCallable, Right, Left, Either
+from .conditionals import cond_any
+from .validator import Validator
+from .monads import Functor, FunctorCallable, Monad, MonoidCallable, Right, Left, Either
 
 T = TypeVar('T')
 

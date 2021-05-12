@@ -9,6 +9,7 @@ from django.views.generic import FormView, ListView, CreateView, UpdateView
 
 from automata.forms import UploadFileForm, EditUploadForm
 from automata.models import Uploads
+from automata.parser.lib import StringStream, Parser
 
 
 class Index(LoginRequiredMixin, ListView):
@@ -33,7 +34,12 @@ class EditUploadedFileFormView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditUploadedFileFormView, self).get_context_data(**kwargs)
         f = self.get_object().file.open('r')
-        context['file_content'] = f.read()
+        file_content = f.read()
+        context['file_content'] = file_content
+        s = StringStream(file_content)
+        p = Parser(s)
+        p.parse()
+        context['parsed'] = p.parsed
         #context['file_content'].replace('\r\n', '\n').replace('\r', '\n').replace('\n', '\r\n')
         return context
 
